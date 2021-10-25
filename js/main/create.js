@@ -22,14 +22,28 @@ function create ()
 
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 7, end: 13 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 6, end: 11 }),
         frameRate: 10,
         repeat: -1
     });
 
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 6 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 5 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'up',
+        frames: this.anims.generateFrameNumbers('dude2', { start: 6, end: 11 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'down',
+        frames: this.anims.generateFrameNumbers('dude2', { start: 0, end: 5 }),
         frameRate: 10,
         repeat: -1
     });
@@ -39,6 +53,18 @@ function create ()
         frames: this.anims.generateFrameNumbers('dudeStand', { start: 0, end: 4 }),
         frameRate: 10,
     });
+
+    // this.anims.create({
+    //     key: 'attackRight',
+    //     frames: this.anims.generateFrameNumbers('dudeStand', { start: 0, end: 4 }),
+    //     frameRate: 20,
+    // });
+
+    // this.anims.create({
+    //     key: 'attackLeft',
+    //     frames: this.anims.generateFrameNumbers('attack', { start: 5, end: 9 }),
+    //     frameRate: 20,
+    // });
 
     ///////////////////////////// COLLISION //////////////////////////
 

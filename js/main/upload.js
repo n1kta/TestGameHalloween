@@ -19,14 +19,18 @@ function update ()
     {
         player.setVelocityY(160);
         player.setVelocityX(0);
-        player.anims.play('left', true);
+        player.anims.play('down', true);
     }
     else if (cursors.up.isDown)
     {
         player.setVelocityY(-160);
         player.setVelocityX(0);
-        player.anims.play('right', true);
+        player.anims.play('up', true);
     }
+    // else if (cursor.shift.isDown)
+    // {
+    //     player.anims.play('attackRight', true);
+    // }
     else
     {
         player.setVelocityX(0);
