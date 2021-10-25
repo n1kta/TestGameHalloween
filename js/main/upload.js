@@ -3,6 +3,7 @@ const diffBetweenEnemyAndPlayer = 500;
 
 const followPlayer = () => {
     
+
     if (enemy.x - player.x <= diffBetweenEnemyAndPlayer) {
         if (Math.abs(enemy.x - player.x) >= 50 || Math.abs(enemy.y - player.y) >= 50) {
             let angle_radians = Math.atan2(enemy.y - player.y, enemy.x - player.x - 50);
@@ -13,14 +14,16 @@ const followPlayer = () => {
             } else {
                 enemy.anims.play('right', true);
             }
-            
+
             enemy.y -= Math.sin(angle_radians) * (speed / 100);
             enemy.x -= Math.cos(angle_radians) * (speed / 100);
         } else {
+            enemy.anims.play('turn', true);
             // Attack
         }
+    } else {
+        enemy.anims.play('turn', true);
     }
-
 }
 
 

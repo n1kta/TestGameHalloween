@@ -12,4 +12,5 @@ function preload ()
 
     this.load.image('grass', 'assets/map/background.png');
     this.load.image('orange', 'assets/map/background-1.png');
+    this.load.image('heart', 'assets/heart.png');
 }

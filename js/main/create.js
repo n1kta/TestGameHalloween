@@ -10,6 +10,7 @@ function create ()
 
     walls = this.physics.add.staticGroup();
     floor = this.physics.add.staticGroup();
+    hearts = this.physics.add.staticGroup();
 
     /// 1:positionToInsertX, 2:positionToInsertY, 3:ItemsX, 4:ItemsY, 5:image, 6:width, 7:height, 8:entity
     mapGen(50, 50, 13, 1, 'grass', 100, 100, walls);
@@ -19,7 +20,12 @@ function create ()
 
     //////////////////////////// ENTITIES ////////////////////////
 
+    hearts.create(150, 50, 'heart');
+    hearts.create(200, 50, 'heart');
+    hearts.create(250, 50, 'heart');
+
     player = this.physics.add.sprite(200, 200, 'dude');
+    player.health = hearts.children.entries.length;
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
