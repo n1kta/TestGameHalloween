@@ -14,7 +14,6 @@ function create ()
     walls = this.physics.add.staticGroup();
     floor = this.physics.add.staticGroup();
     hearts = this.physics.add.staticGroup();
-    gameOver = this.physics.add.staticGroup();
 
     /// 1:positionToInsertX, 2:positionToInsertY, 3:ItemsX, 4:ItemsY, 5:image, 6:width, 7:height, 8:entity
     mapGen(50, 50, 13, 1, 'grass', 100, 100, walls);
@@ -41,11 +40,20 @@ function create ()
     enemy.attack = attack;
     enemy.setBounce(0.2);
 
-    enemy2 = this.physics.add.sprite(1200, 400, 'enemy');
+    enemy2 = this.physics.add.sprite(1300, 400, 'enemy');
     enemy2.health = healthSimpleEnemy;
     enemy2.attack = attack;
     enemy2.setBounce(0.2);
 
+    enemy3 = this.physics.add.sprite(1200, 500, 'enemy');
+    enemy3.health = healthSimpleEnemy;
+    enemy3.attack = attack;
+    enemy3.setBounce(0.2);
+
+    enemy4 = this.physics.add.sprite(1400, 500, 'enemy');
+    enemy4.health = healthSimpleEnemy;
+    enemy4.attack = attack;
+    enemy4.setBounce(0.2);
 
     boss = this.physics.add.sprite(400, 300, 'boss');
 

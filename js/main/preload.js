@@ -19,12 +19,10 @@ function preload ()
 
 
     this.load.spritesheet('boss', 'assets/player/boss-animation.png', { frameWidth: 255, frameHeight: 250 });
-    this.load.spritesheet('bossWalking', 'assets/player/boss-walking.png', { frameWidth: 220, frameHeight: 225 });
-    this.load.spritesheet('bossAttack', 'assets/player/boss-attack.png', { frameWidth: 225, frameHeight: 280 });
 
     ////////////////////// IMAGES ////////////////////////
 
     this.load.image('grass', 'assets/map/background.png');
     this.load.image('orange', 'assets/map/background-1.png');
-    this.load.image('game_over', 'assets/game_over.jpg');
+    this.load.image('game_over', 'assets/game_over1.png');
 }

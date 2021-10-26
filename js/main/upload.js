@@ -1,6 +1,7 @@
 const speed = 200;
 const enemySpeed = 80
 const diffBetweenEnemyAndPlayer = 500;
+const diffBetweenEnemyAndPlayerByPoints = 200
 var left = false;
 var right = true;
 
@@ -10,6 +11,14 @@ function enemyDeath (){
 
 function enemyDeath2 (){
     enemy2.setAlpha(0)
+}
+
+function enemyDeath3 (){
+    enemy3.setAlpha(0)
+}
+
+function enemyDeath4 (){
+    enemy4.setAlpha(0)
 }
 
 function playAnim (anim) {
@@ -31,8 +40,11 @@ let counterAttackPlayer = 0;
 let deathEnemy = false
 
 let cooldownAttackEnemy2 = cooldown;
-let counterAttackPlayer2 = 0;
 let deathEnemy2 = false
+
+let cooldownAttackEnemy3 = cooldown;
+let deathEnemy3 = false
+
 
 const followPlayer = () => {
     if (enemy.health <= 0) {
@@ -152,11 +164,70 @@ const followPlayer2 = () => {
     }
 }
 
+const followPlayer3 = () => {
+    if (enemy3.health <= 0) {
+        score += 10
+        deathEnemy3 = true
+        scoreText.setText('SCORE: ' + score);
+        return;
+    }
+
+    if (enemy3.x - player.x <= diffBetweenEnemyAndPlayer) {
+        if (Math.abs(enemy3.x - player.x) >= 50 || Math.abs(enemy3.y - player.y) >= 50) {
+            let angle_radians = Math.atan2(enemy3.y - player.y, enemy3.x - player.x - 50);
+            let leftMovement = enemy3.x - player.x - 50;
+
+            if (leftMovement > 0) {
+                enemy3.anims.play('leftE', true);
+            } else {
+                enemy3.anims.play('rightE', true);
+            }
+
+            enemy3.y -= Math.sin(angle_radians) * (enemySpeed / 100);
+            enemy3.x -= Math.cos(angle_radians) * (enemySpeed / 100);
+        } else {
+            if(enemy3.x - player.x - 20 > 0) {
+                enemy3.anims.play('leftPunchE', true);
+            }
+            else{
+                enemy3.anims.play('rightPunchE', true);
+            }
+            // Attack
+            if (player.health === 3) {
+                player.health -= enemy3.attack;
+                if(player.health === 2){
+                    heart2.destroy(true)
+                } else if (player.health === 1){
+                    heart1.destroy(true)
+                }else if (player.health === 0){
+                    heart.destroy(true)
+                }
+                // hearts.remove(hearts.getChildren()[player.health], true);
+            } else if (cooldownAttackEnemy3 < 0) {
+                player.health -= enemy3.attack;
+                cooldownAttackEnemy3 = cooldown;
+                if(player.health === 2){
+                    heart2.destroy(true)
+                } else if (player.health === 1){
+                    heart1.destroy(true)
+                }else if (player.health === 0){
+                    heart.destroy(true)
+                }
+            } else {
+                cooldownAttackEnemy3 -= 10;
+            }
+            
+        }
+    } else {
+        enemy3.anims.play('rightStandE', true);
+    }
+}
+
 function update ()
 {
     //////////////////////////////////// HERO MOVEMENT //////////////////////////////////
     if(player.health === 0) {
-        gameOver.create(1280 / 2, 720 / 2, 'game_over');
+        game_over = this.physics.add.sprite(window.innerWidth/2, window.innerHeight/2, 'game_over').setScrollFactor(0);
         setTimeout(() => {
             location.reload();
         }, 1000);
@@ -204,7 +275,7 @@ function update ()
 
         if (counterAttackPlayer === 0){
             player.anims.play('attack', true);
-            if (enemy.x - player.x <= diffBetweenEnemyAndPlayer) {
+            if (Math.sqrt(Math.pow(enemy.x - player.x, 2) + Math.pow(enemy.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 enemy.health -= player.attack;
             }
             ++counterAttackPlayer;
@@ -212,7 +283,7 @@ function update ()
 
         if (cooldownAttackPlayer < 0) {
             player.anims.play('attack', true);
-            if (enemy.x - player.x <= diffBetweenEnemyAndPlayer) {
+            if (Math.sqrt(Math.pow(enemy.x - player.x, 2) + Math.pow(enemy.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 enemy.health -= player.attack;
             }
             cooldownAttackPlayer = cooldown - 250;
@@ -222,22 +293,42 @@ function update ()
 
         if (counterAttackPlayer === 0){
             player.anims.play('attack', true);
-            if (enemy2.x - player.x <= diffBetweenEnemyAndPlayer) {
+            if (Math.sqrt(Math.pow(enemy2.x - player.x, 2) + Math.pow(enemy2.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 enemy2.health -= player.attack;
-                console.log('xd')
             }
             ++counterAttackPlayer;
         }
 
         if (cooldownAttackPlayer < 0) {
             player.anims.play('attack', true);
-            if (enemy2.x - player.x <= diffBetweenEnemyAndPlayer) {
+            if (Math.sqrt(Math.pow(enemy2.x - player.x, 2) + Math.pow(enemy2.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 enemy2.health -= player.attack;
             }
             cooldownAttackPlayer = cooldown - 250;
         } else {
             cooldownAttackPlayer -= 10;
         }
+
+        if (counterAttackPlayer === 0){
+            player.anims.play('attack', true);
+            if (Math.sqrt(Math.pow(enemy3.x - player.x, 2) + Math.pow(enemy3.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
+                enemy3.health -= player.attack;
+            }
+            ++counterAttackPlayer;
+        }
+
+        if (cooldownAttackPlayer < 0) {
+            player.anims.play('attack', true);
+            if (Math.sqrt(Math.pow(enemy3.x - player.x, 2) + Math.pow(enemy3.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
+                enemy3.health -= player.attack;
+            }
+            cooldownAttackPlayer = cooldown - 250;
+        } else {
+            cooldownAttackPlayer -= 10;
+        }
+
+        
+
     }
     else
     {
@@ -263,7 +354,6 @@ function update ()
     if (deathEnemy2 != true)
     {
         followPlayer2();
-        console.log('sth')
     }else {
         if(enemy2.anims){
             enemy2.anims.play('enemyDeath', true);
@@ -272,6 +362,19 @@ function update ()
             return
         }
     }
+
+    if (deathEnemy3 != true)
+    {
+        followPlayer3();
+    }else {
+        if(enemy3.anims){
+            enemy3.anims.play('enemyDeath', true);
+            setTimeout(enemyDeath3, 1000)
+        }else {
+            return
+        }
+    }
+
 
     if(heart.anims){
         heart.anims.play('heart', true)
