@@ -56,8 +56,8 @@ function create ()
     enemy4.setBounce(0.2);
 
     boss = this.physics.add.sprite(900, 300, 'boss');
-    boss.health = healthHardEnemy;
-    boss.attack = 0;
+    boss.health = healthHardEnemy - 1;
+    boss.attack = 1;
     boss.setBounce(0.2);
 
     scoreText = this.add.text(window.innerWidth - 300, 75, 'POINTS: 0', { fontFamily: 'Revalia' ,fontSize: '42px', fill: '#fff' }).setScrollFactor(0);
@@ -204,7 +204,7 @@ function create ()
 
     this.physics.add.collider(player, walls);
     this.physics.add.collider(enemy, walls);
-
+    this.physics.add.collider(boss, walls);
     this.cameras.main.startFollow(player, true);
 
     // this.scale.startFullscreen()
