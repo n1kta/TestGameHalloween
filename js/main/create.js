@@ -19,20 +19,18 @@ function create ()
     mapGen(150, 150, 12, 6, 'orange', 100, 100, floor);
 
     //////////////////////////// ENTITIES ////////////////////////
-
     hearts.create(150, 50, 'heart');
     hearts.create(200, 50, 'heart');
     hearts.create(250, 50, 'heart');
 
     player = this.physics.add.sprite(200, 200, 'dude');
     player.health = hearts.children.entries.length;
-    player.setBounce(0.2);
+    player.attack = attack;
     player.setCollideWorldBounds(true);
 
     enemy = this.physics.add.sprite(1000, 200, 'enemy');
     enemy.health = healthSimpleEnemy;
     enemy.attack = attack;
-    enemy.setBounce(0.2);
     enemy.setCollideWorldBounds(true);
 
     cursors = this.input.keyboard.createCursorKeys();

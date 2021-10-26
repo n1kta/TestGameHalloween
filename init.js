@@ -5,7 +5,7 @@ const config = {
     scene: {
         preload: preload,
         create: create,
-        update: update
+        update: update,
     },
     physics: {
         default: 'arcade',
@@ -16,4 +16,4 @@ const config = {
     },
 };
 
-const game = new Phaser.Game(config);
+var game = new Phaser.Game(config);
