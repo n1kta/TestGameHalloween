@@ -35,7 +35,7 @@ function create ()
     player.attack = attack;
     // player.setCollideWorldBounds(true);
 
-    enemy = this.physics.add.sprite(1000, 200, 'enemy');
+    enemy = this.physics.add.sprite(1400, 200, 'enemy');
     enemy.health = healthSimpleEnemy;
     enemy.attack = attack;
     enemy.setBounce(0.2);
@@ -55,7 +55,10 @@ function create ()
     enemy4.attack = attack;
     enemy4.setBounce(0.2);
 
-    boss = this.physics.add.sprite(400, 300, 'boss');
+    boss = this.physics.add.sprite(900, 300, 'boss');
+    boss.health = healthHardEnemy;
+    boss.attack = 0;
+    boss.setBounce(0.2);
 
     scoreText = this.add.text(window.innerWidth - 300, 75, 'POINTS: 0', { fontFamily: 'Revalia' ,fontSize: '42px', fill: '#fff' }).setScrollFactor(0);
     // player.health = hearts.children.entries.length;
