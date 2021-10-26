@@ -5,11 +5,11 @@ var left = false;
 var right = true;
 
 function enemyDeath (){
-    enemy.destroy(true)
+    enemy.setAlpha(0)
 }
 
 function enemyDeath2 (){
-    enemy2.destroy(true)
+    enemy2.setAlpha(0)
 }
 
 function playAnim (anim) {
@@ -263,6 +263,7 @@ function update ()
     if (deathEnemy2 != true)
     {
         followPlayer2();
+        console.log('sth')
     }else {
         if(enemy2.anims){
             enemy2.anims.play('enemyDeath', true);

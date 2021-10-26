@@ -34,7 +34,7 @@ function create ()
     player = this.physics.add.sprite(200, 200, 'dude');
     player.health = 3;
     player.attack = attack;
-    player.setCollideWorldBounds(true);
+    // player.setCollideWorldBounds(true);
 
     enemy = this.physics.add.sprite(1000, 200, 'enemy');
     enemy.health = healthSimpleEnemy;
