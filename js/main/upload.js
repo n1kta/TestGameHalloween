@@ -4,16 +4,35 @@ const diffBetweenEnemyAndPlayer = 500;
 var left = false;
 var right = true;
 
+function enemyDeath (){
+    enemy.destroy(true), 2000
+}
+
 function playAnim (anim) {
-    heart1.anims.play('heart', true)
+    if(heart1.anims){
+        heart1.anims.play('heart', true)
+    }
 }
 
 function playAnim2 (anim) {
-    heart2.anims.play('heart', true)
+    if(heart2.anims){
+        heart2.anims.play('heart', true)
+    }
 }
+const cooldown = 750;
+
+let cooldownAttackEnemy = cooldown;
+let cooldownAttackPlayer = cooldown - 250;
+let counterAttackPlayer = 0;
+let deathEnemy = false
 
 const followPlayer = () => {
-    
+    if (enemy.health <= 0) {
+        score += 5
+        deathEnemy = true
+        scoreText.setText('SCORE: ' + score);
+        return;
+    }
 
     if (enemy.x - player.x <= diffBetweenEnemyAndPlayer) {
         if (Math.abs(enemy.x - player.x) >= 50 || Math.abs(enemy.y - player.y) >= 50) {
@@ -36,6 +55,30 @@ const followPlayer = () => {
                 enemy.anims.play('rightPunchE', true);
             }
             // Attack
+            if (player.health === 3) {
+                player.health -= enemy.attack;
+                if(player.health === 2){
+                    heart2.destroy(true)
+                } else if (player.health === 1){
+                    heart1.destroy(true)
+                }else if (player.health === 0){
+                    heart.destroy(true)
+                }
+                // hearts.remove(hearts.getChildren()[player.health], true);
+            } else if (cooldownAttackEnemy < 0) {
+                player.health -= enemy.attack;
+                cooldownAttackEnemy = cooldown;
+                if(player.health === 2){
+                    heart2.destroy(true)
+                } else if (player.health === 1){
+                    heart1.destroy(true)
+                }else if (player.health === 0){
+                    heart.destroy(true)
+                }
+            } else {
+                cooldownAttackEnemy -= 10;
+            }
+            
         }
     } else {
         enemy.anims.play('rightStandE', true);
@@ -46,6 +89,10 @@ const followPlayer = () => {
 function update ()
 {
     //////////////////////////////////// HERO MOVEMENT //////////////////////////////////
+
+    if(player.health === 0) {
+        return;
+    }
 
     if (cursors.left.isDown)
     {
@@ -86,6 +133,23 @@ function update ()
         player.setVelocityX(0);
         player.setVelocityY(0);
 
+        if (counterAttackPlayer === 0){
+            player.anims.play('attack', true);
+            if (enemy.x - player.x <= diffBetweenEnemyAndPlayer) {
+                enemy.health -= player.attack;
+            }
+            ++counterAttackPlayer;
+        }
+
+        if (cooldownAttackPlayer < 0) {
+            player.anims.play('attack', true);
+            if (enemy.x - player.x <= diffBetweenEnemyAndPlayer) {
+                enemy.health -= player.attack;
+            }
+            cooldownAttackPlayer = cooldown - 250;
+        } else {
+            cooldownAttackPlayer -= 10;
+        }
     }
     else
     {
@@ -96,13 +160,30 @@ function update ()
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
+    if (deathEnemy != true)
+    {
+        followPlayer();
+    }else {
+        if(enemy.anims){
+            enemy.anims.play('enemyDeath', true);
+            setTimeout(enemyDeath, 1000)
+        }else {
+            return
+        }
+    }
 
-    followPlayer();
-
-    heart.anims.play('heart', true)
+    if(heart.anims){
+        heart.anims.play('heart', true)
+    }
+    if(heart1.anims){
+        setTimeout(playAnim, 200)
+    }
+    if(heart2.anims){
+        setTimeout(playAnim2, 400)
+    }
     boss.anims.play('standB', true)
-    setTimeout(playAnim, 200)
-    setTimeout(playAnim2, 400)
+    
+    
 
     // var scrol_x = player.x - game.config.width/2;    
     // var scrol_y = player.y - game.config.height/2;    

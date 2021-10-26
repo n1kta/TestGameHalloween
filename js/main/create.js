@@ -2,6 +2,7 @@ const healthPlayer = 3;
 const healthSimpleEnemy = 1;
 const healthHardEnemy = 5;
 var scoreText;
+let score = 0;
 
 const attack = 1;
 
@@ -28,14 +29,17 @@ function create ()
     heart1 = this.physics.add.sprite(150, 100, 'heart').setScrollFactor(0)
     heart2 = this.physics.add.sprite(200, 100, 'heart').setScrollFactor(0)
 
+    player = this.physics.add.sprite(200, 200, 'dude');
+    player.health = 3;
+    player.attack = attack;
+    player.setCollideWorldBounds(true);
+
     enemy = this.physics.add.sprite(1000, 200, 'enemy');
     enemy.health = healthSimpleEnemy;
     enemy.attack = attack;
     enemy.setBounce(0.2);
 
     boss = this.physics.add.sprite(400, 300, 'boss');
-
-    player = this.physics.add.sprite(200, 200, 'dude');
 
     scoreText = this.add.text(window.innerWidth - 300, 75, 'POINTS: 0', { fontFamily: 'Revalia' ,fontSize: '42px', fill: '#fff' }).setScrollFactor(0);
     // player.health = hearts.children.entries.length;
@@ -141,6 +145,11 @@ function create ()
     this.anims.create({
         key: 'standB',
         frames: this.anims.generateFrameNumbers('boss', { start: 0, end: 10 }),
+        frameRate: 10,
+    })
+    this.anims.create({
+        key: 'enemyDeath',
+        frames: this.anims.generateFrameNumbers('enemyDeath', { start: 0, end: 3 }),
         frameRate: 10,
     })
 

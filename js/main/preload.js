@@ -15,6 +15,8 @@ function preload ()
     this.load.spritesheet('walkingEnemy', 'assets/player/walking_enemy.png', { frameWidth: 70, frameHeight: 80 });
     this.load.spritesheet('enemyStand', 'assets/player/enemy_stand.png', {frameWidth: 50, frameHeight: 80});
     this.load.spritesheet('enemyPunch', 'assets/player/enemy_punch.png', {frameWidth: 97, frameHeight: 80});
+    this.load.spritesheet('enemyDeath', 'assets/player/enemy_death.png', { frameWidth: 75, frameHeight: 80 });
+
 
     this.load.spritesheet('boss', 'assets/player/boss-animation.png', { frameWidth: 255, frameHeight: 250 });
 
