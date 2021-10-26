@@ -41,6 +41,12 @@ function create ()
     enemy.attack = attack;
     enemy.setBounce(0.2);
 
+    enemy2 = this.physics.add.sprite(1200, 400, 'enemy');
+    enemy2.health = healthSimpleEnemy;
+    enemy2.attack = attack;
+    enemy2.setBounce(0.2);
+
+
     boss = this.physics.add.sprite(400, 300, 'boss');
 
     scoreText = this.add.text(window.innerWidth - 300, 75, 'POINTS: 0', { fontFamily: 'Revalia' ,fontSize: '42px', fill: '#fff' }).setScrollFactor(0);
@@ -144,11 +150,38 @@ function create ()
         frames: this.anims.generateFrameNumbers('heart', { start: 0, end: 8 }),
         frameRate: 5,
     });
+
+
+
     this.anims.create({
         key: 'standB',
         frames: this.anims.generateFrameNumbers('boss', { start: 0, end: 10 }),
         frameRate: 10,
     })
+    this.anims.create({
+        key: 'walkBossR',
+        frames: this.anims.generateFrameNumbers('bossWalking', { start: 0, end: 7 }),
+        frameRate: 10,
+    })
+    this.anims.create({
+        key: 'walkBossL',
+        frames: this.anims.generateFrameNumbers('bossWalking', { start: 8, end: 15 }),
+        frameRate: 10,
+    })
+    this.anims.create({
+        key: 'attackBossR',
+        frames: this.anims.generateFrameNumbers('bossAttack', { start: 0, end: 3 }),
+        frameRate: 10,
+    })
+    this.anims.create({
+        key: 'attackBossL',
+        frames: this.anims.generateFrameNumbers('bossAttack', { start: 4, end: 7 }),
+        frameRate: 10,
+    })
+
+
+
+
     this.anims.create({
         key: 'enemyDeath',
         frames: this.anims.generateFrameNumbers('enemyDeath', { start: 0, end: 3 }),

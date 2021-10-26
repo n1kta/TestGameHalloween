@@ -5,7 +5,11 @@ var left = false;
 var right = true;
 
 function enemyDeath (){
-    enemy.destroy(true), 2000
+    enemy.destroy(true)
+}
+
+function enemyDeath2 (){
+    enemy2.destroy(true)
 }
 
 function playAnim (anim) {
@@ -26,9 +30,13 @@ let cooldownAttackPlayer = cooldown - 250;
 let counterAttackPlayer = 0;
 let deathEnemy = false
 
+let cooldownAttackEnemy2 = cooldown;
+let counterAttackPlayer2 = 0;
+let deathEnemy2 = false
+
 const followPlayer = () => {
     if (enemy.health <= 0) {
-        score += 5
+        score += 10
         deathEnemy = true
         scoreText.setText('SCORE: ' + score);
         return;
@@ -85,6 +93,64 @@ const followPlayer = () => {
     }
 }
 
+const followPlayer2 = () => {
+    if (enemy2.health <= 0) {
+        score += 10
+        deathEnemy2 = true
+        scoreText.setText('SCORE: ' + score);
+        return;
+    }
+
+    if (enemy2.x - player.x <= diffBetweenEnemyAndPlayer) {
+        if (Math.abs(enemy2.x - player.x) >= 50 || Math.abs(enemy2.y - player.y) >= 50) {
+            let angle_radians = Math.atan2(enemy2.y - player.y, enemy2.x - player.x - 50);
+            let leftMovement = enemy2.x - player.x - 50;
+
+            if (leftMovement > 0) {
+                enemy2.anims.play('leftE', true);
+            } else {
+                enemy2.anims.play('rightE', true);
+            }
+
+            enemy2.y -= Math.sin(angle_radians) * (enemySpeed / 100);
+            enemy2.x -= Math.cos(angle_radians) * (enemySpeed / 100);
+        } else {
+            if(enemy2.x - player.x - 20 > 0) {
+                enemy2.anims.play('leftPunchE', true);
+            }
+            else{
+                enemy2.anims.play('rightPunchE', true);
+            }
+            // Attack
+            if (player.health === 3) {
+                player.health -= enemy2.attack;
+                if(player.health === 2){
+                    heart2.destroy(true)
+                } else if (player.health === 1){
+                    heart1.destroy(true)
+                }else if (player.health === 0){
+                    heart.destroy(true)
+                }
+                // hearts.remove(hearts.getChildren()[player.health], true);
+            } else if (cooldownAttackEnemy2 < 0) {
+                player.health -= enemy2.attack;
+                cooldownAttackEnemy2 = cooldown;
+                if(player.health === 2){
+                    heart2.destroy(true)
+                } else if (player.health === 1){
+                    heart1.destroy(true)
+                }else if (player.health === 0){
+                    heart.destroy(true)
+                }
+            } else {
+                cooldownAttackEnemy2 -= 10;
+            }
+            
+        }
+    } else {
+        enemy2.anims.play('rightStandE', true);
+    }
+}
 
 function update ()
 {
@@ -153,6 +219,25 @@ function update ()
         } else {
             cooldownAttackPlayer -= 10;
         }
+
+        if (counterAttackPlayer === 0){
+            player.anims.play('attack', true);
+            if (enemy2.x - player.x <= diffBetweenEnemyAndPlayer) {
+                enemy2.health -= player.attack;
+                console.log('xd')
+            }
+            ++counterAttackPlayer;
+        }
+
+        if (cooldownAttackPlayer < 0) {
+            player.anims.play('attack', true);
+            if (enemy2.x - player.x <= diffBetweenEnemyAndPlayer) {
+                enemy2.health -= player.attack;
+            }
+            cooldownAttackPlayer = cooldown - 250;
+        } else {
+            cooldownAttackPlayer -= 10;
+        }
     }
     else
     {
@@ -175,6 +260,18 @@ function update ()
         }
     }
 
+    if (deathEnemy2 != true)
+    {
+        followPlayer2();
+    }else {
+        if(enemy2.anims){
+            enemy2.anims.play('enemyDeath', true);
+            setTimeout(enemyDeath2, 1000)
+        }else {
+            return
+        }
+    }
+
     if(heart.anims){
         heart.anims.play('heart', true)
     }
@@ -184,7 +281,7 @@ function update ()
     if(heart2.anims){
         setTimeout(playAnim2, 400)
     }
-    boss.anims.play('standB', true)
+    boss.anims.play('standB', true)    
     
     
 
