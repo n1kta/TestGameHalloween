@@ -33,6 +33,8 @@ function create ()
     enemy.attack = attack;
     enemy.setBounce(0.2);
 
+    boss = this.physics.add.sprite(400, 300, 'boss');
+
     player = this.physics.add.sprite(200, 200, 'dude');
 
     scoreText = this.add.text(window.innerWidth - 300, 75, 'POINTS: 0', { fontFamily: 'Revalia' ,fontSize: '42px', fill: '#fff' }).setScrollFactor(0);
@@ -119,16 +121,28 @@ function create ()
     // });
 
     this.anims.create({
-        key: 'attack',
+        key: 'attackRight',
         frames: this.anims.generateFrameNumbers('dude_punch', { start: 0, end: 4 }),
         frameRate: 20,
     });
+
+    this.anims.create({
+        key: 'attackLeft',
+        frames: this.anims.generateFrameNumbers('dude_punch', { start: 5, end: 9 }),
+        frameRate: 20,
+    });
+
 
     this.anims.create({
         key: 'heart',
         frames: this.anims.generateFrameNumbers('heart', { start: 0, end: 8 }),
         frameRate: 5,
     });
+    this.anims.create({
+        key: 'standB',
+        frames: this.anims.generateFrameNumbers('boss', { start: 0, end: 10 }),
+        frameRate: 10,
+    })
 
 
     ///////////////////////////// COLLISION //////////////////////////

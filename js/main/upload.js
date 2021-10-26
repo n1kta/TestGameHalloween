@@ -1,6 +1,8 @@
 const speed = 200;
 const enemySpeed = 80
 const diffBetweenEnemyAndPlayer = 500;
+var left = false;
+var right = true;
 
 function playAnim (anim) {
     heart1.anims.play('heart', true)
@@ -50,12 +52,16 @@ function update ()
         player.setVelocityX(-speed);
         player.setVelocityY(0);
         player.anims.play('left', true);
+        right = false;
+        left = true;
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(speed);
         player.setVelocityY(0);
         player.anims.play('right', true);
+        right = true;
+        left = false;
     }
     else if (cursors.down.isDown)
     {
@@ -71,7 +77,12 @@ function update ()
     }
     else if (cursors.space.isDown)
     {
-        player.anims.play('attack', true);
+        if (right){
+            player.anims.play('attackRight', true);
+        } else {
+            player.anims.play('attackLeft', true);
+        }
+        
         player.setVelocityX(0);
         player.setVelocityY(0);
 
@@ -89,6 +100,7 @@ function update ()
     followPlayer();
 
     heart.anims.play('heart', true)
+    boss.anims.play('standB', true)
     setTimeout(playAnim, 200)
     setTimeout(playAnim2, 400)
 
