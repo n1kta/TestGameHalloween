@@ -1,4 +1,5 @@
-const speed = 160;
+const speed = 200;
+const enemySpeed = 80
 const diffBetweenEnemyAndPlayer = 500;
 
 const followPlayer = () => {
@@ -10,19 +11,24 @@ const followPlayer = () => {
             let leftMovement = enemy.x - player.x - 50;
 
             if (leftMovement > 0) {
-                enemy.anims.play('left', true);
+                enemy.anims.play('leftE', true);
             } else {
-                enemy.anims.play('right', true);
+                enemy.anims.play('rightE', true);
             }
 
-            enemy.y -= Math.sin(angle_radians) * (speed / 100);
-            enemy.x -= Math.cos(angle_radians) * (speed / 100);
+            enemy.y -= Math.sin(angle_radians) * (enemySpeed / 100);
+            enemy.x -= Math.cos(angle_radians) * (enemySpeed / 100);
         } else {
-            enemy.anims.play('turn', true);
+            if(enemy.x - player.x - 20 > 0) {
+                enemy.anims.play('leftPunchE', true);
+            }
+            else{
+                enemy.anims.play('rightPunchE', true);
+            }
             // Attack
         }
     } else {
-        enemy.anims.play('turn', true);
+        enemy.anims.play('rightStandE', true);
     }
 }
 
@@ -58,6 +64,9 @@ function update ()
     else if (cursors.space.isDown)
     {
         player.anims.play('attack', true);
+        player.setVelocityX(0);
+        player.setVelocityY(0);
+
     }
     else
     {
@@ -70,4 +79,11 @@ function update ()
     //////////////////////////////////////////////////////////////////////////////////////
 
     followPlayer();
+
+    hearts.x = 800
+    // var scrol_x = player.x - game.config.width/2;    
+    // var scrol_y = player.y - game.config.height/2;    
+
+    //  this.cameras.main.scrollX = scrol_x;    ///  scrollX - Х top left point of camera
+    //  this.cameras.main.scrollY = scrol_y;    ///  scrollY - Y top left point of camera
 }

@@ -20,20 +20,19 @@ function create ()
 
     //////////////////////////// ENTITIES ////////////////////////
 
-    hearts.create(150, 50, 'heart');
-    hearts.create(200, 50, 'heart');
-    hearts.create(250, 50, 'heart');
-
-    player = this.physics.add.sprite(200, 200, 'dude');
-    player.health = hearts.children.entries.length;
-    player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
+    hearts.create(100, 100, 'heart').setScrollFactor(0);
+    hearts.create(150, 100, 'heart').setScrollFactor(0);
+    hearts.create(200, 100, 'heart').setScrollFactor(0);
 
     enemy = this.physics.add.sprite(1000, 200, 'enemy');
     enemy.health = healthSimpleEnemy;
     enemy.attack = attack;
     enemy.setBounce(0.2);
-    enemy.setCollideWorldBounds(true);
+
+    player = this.physics.add.sprite(200, 200, 'dude');
+    player.health = hearts.children.entries.length;
+    // player.setBounce(0.2);
+    // player.setCollideWorldBounds(true);
 
     cursors = this.input.keyboard.createCursorKeys();
 
@@ -41,53 +40,77 @@ function create ()
 
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 7, end: 13 }),
-        frameRate: 10,
+        frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 15 }),
+        frameRate: 20,
         repeat: -1
     });
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 6 }),
-        frameRate: 10,
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 7 }),
+        frameRate: 20,
         repeat: -1
     });
 
     this.anims.create({
         key: 'up',
         frames: this.anims.generateFrameNumbers('dude2', { start: 6, end: 11 }),
-        frameRate: 10,
+        frameRate: 20,
         repeat: -1
     });
 
     this.anims.create({
         key: 'down',
         frames: this.anims.generateFrameNumbers('dude2', { start: 0, end: 5 }),
-        frameRate: 10,
+        frameRate: 20,
         repeat: -1
     });
     this.anims.create({
         key: 'turn',
         frames: this.anims.generateFrameNumbers('dudeStand', { start: 0, end: 4 }),
-        frameRate: 10,
+        frameRate: 8,
     });
 
     this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('enemy', { start: 7, end: 13 }),
+        key: 'leftE',
+        frames: this.anims.generateFrameNumbers('walkingEnemy', { start: 6, end: 11 }),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 6 }),
+        key: 'rightE',
+        frames: this.anims.generateFrameNumbers('walkingEnemy', { start: 0, end: 5 }),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
-        key: 'turn',
-        frames: this.anims.generateFrameNumbers('enemyStand', { start: 0, end: 4 }),
-        frameRate: 10,
+        key: 'rightStandE',
+        frames: this.anims.generateFrameNumbers('enemyStand', { start: 0, end: 2 }),
+        frameRate: 5,
+        repeat: -1
     });
+    this.anims.create({
+        key: 'leftStandE',
+        frames: this.anims.generateFrameNumbers('enemyStand', { start: 3, end: 5 }),
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'leftPunchE',
+        frames: this.anims.generateFrameNumbers('enemyPunch', { start: 7, end: 13 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'rightPunchE',
+        frames: this.anims.generateFrameNumbers('enemyPunch', { start: 0, end: 6 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    // this.anims.create({
+    //     key: 'turn',
+    //     frames: this.anims.generateFrameNumbers('enemyStand', { start: 0, end: 4 }),
+    //     frameRate: 10,
+    // });
 
     this.anims.create({
         key: 'attack',
@@ -99,4 +122,6 @@ function create ()
 
     this.physics.add.collider(player, walls);
     this.physics.add.collider(enemy, walls);
+
+    this.cameras.main.startFollow(player, true)
 }

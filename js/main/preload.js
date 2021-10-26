@@ -3,13 +3,14 @@ function preload ()
 
     /////////////////////// SPRITESHEETS /////////////////////
 
-    this.load.spritesheet('dude', 'assets/player/walking_hero.png', { frameWidth: 50, frameHeight: 100 });
+    this.load.spritesheet('dude', 'assets/player/walking_hero.png', { frameWidth: 45, frameHeight: 80 });
     this.load.spritesheet('dude2', 'assets/player/walking_hero_up_down.png', { frameWidth: 45, frameHeight: 80 });
-    this.load.spritesheet('dude_punch', 'assets/player/punch.png', { frameWidth: 75, frameHeight: 80 });
-    this.load.spritesheet('dudeStand', 'assets/player/animation_hero.png', {frameWidth: 45, frameHeight: 100});
+    this.load.spritesheet('dude_punch', 'assets/player/hero_punch.png', { frameWidth: 75, frameHeight: 80 });
+    this.load.spritesheet('dudeStand', 'assets/player/hero_stand.png', {frameWidth: 45, frameHeight: 80});
     this.load.spritesheet('attack', 'assets/player/attack.png', {frameWidth: 100, frameHeight: 100});
-    this.load.spritesheet('enemy', 'assets/player/walking.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('enemyStand', 'assets/player/animation.png', {frameWidth: 100, frameHeight: 100});
+    this.load.spritesheet('walkingEnemy', 'assets/player/walking_enemy.png', { frameWidth: 70, frameHeight: 80 });
+    this.load.spritesheet('enemyStand', 'assets/player/enemy_stand.png', {frameWidth: 50, frameHeight: 80});
+    this.load.spritesheet('enemyPunch', 'assets/player/enemy_punch.png', {frameWidth: 97, frameHeight: 80});
 
     ////////////////////// IMAGES ////////////////////////
 

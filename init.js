@@ -1,6 +1,6 @@
 const config = {
     type: Phaser.AUTO,
-    width: 1280,
+    width: 1300,
     height: 720,
     scene: {
         preload: preload,
