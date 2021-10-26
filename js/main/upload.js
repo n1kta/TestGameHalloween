@@ -49,6 +49,9 @@ let deathEnemy2 = false
 let cooldownAttackEnemy3 = cooldown;
 let deathEnemy3 = false
 
+let cooldownAttackEnemy4 = cooldown;
+let deathEnemy4 = false
+
 let cooldownAttackEnemyHard = cooldown;
 let counterAttackPlayerHard = 0;
 let deathEnemyHard = false
@@ -133,7 +136,7 @@ const followPlayer2 = () => {
 
             enemy2.y -= Math.sin(angle_radians) * (enemySpeed / 100);
             enemy2.x -= Math.cos(angle_radians) * (enemySpeed / 100);
-        } else {
+        } else if (Math.sqrt(Math.pow(enemy2.x - player.x, 2) + Math.pow(enemy2.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
             if (enemy2.x - player.x - 20 > 0) {
                 enemy2.anims.play('leftPunchE', true);
             }
@@ -179,7 +182,7 @@ const followPlayer3 = () => {
         return;
     }
 
-    if (enemy3.x - player.x <= diffBetweenEnemyAndPlayer) {
+    if (Math.sqrt(Math.pow(enemy3.x - player.x, 2) + Math.pow(enemy3.y - player.y, 2)) <= diffBetweenEnemyAndPlayer) {
         if (Math.abs(enemy3.x - player.x) >= 50 || Math.abs(enemy3.y - player.y) >= 50) {
             let angle_radians = Math.atan2(enemy3.y - player.y, enemy3.x - player.x - 50);
             let leftMovement = enemy3.x - player.x - 50;
@@ -192,7 +195,7 @@ const followPlayer3 = () => {
 
             enemy3.y -= Math.sin(angle_radians) * (enemySpeed / 100);
             enemy3.x -= Math.cos(angle_radians) * (enemySpeed / 100);
-        } else {
+        } else if (Math.sqrt(Math.pow(enemy3.x - player.x, 2) + Math.pow(enemy3.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
             if (enemy3.x - player.x - 20 > 0) {
                 enemy3.anims.play('leftPunchE', true);
             }
@@ -230,15 +233,74 @@ const followPlayer3 = () => {
     }
 }
 
+const followPlayer4 = () => {
+    if (enemy4.health <= 0) {
+        score += 10
+        deathEnemy4 = true
+        scoreText.setText('SCORE: ' + score);
+        return;
+    }
+
+    if (Math.sqrt(Math.pow(enemy4.x - player.x, 2) + Math.pow(enemy4.y - player.y, 2)) <= diffBetweenEnemyAndPlayer) {
+        if (Math.abs(enemy4.x - player.x) >= 50 || Math.abs(enemy4.y - player.y) >= 50) {
+            let angle_radians = Math.atan2(enemy4.y - player.y, enemy4.x - player.x - 50);
+            let leftMovement = enemy4.x - player.x - 50;
+
+            if (leftMovement > 0) {
+                enemy4.anims.play('leftE', true);
+            } else {
+                enemy4.anims.play('rightE', true);
+            }
+
+            enemy4.y -= Math.sin(angle_radians) * (enemySpeed / 100);
+            enemy4.x -= Math.cos(angle_radians) * (enemySpeed / 100);
+        } else if (Math.sqrt(Math.pow(enemy4.x - player.x, 2) + Math.pow(enemy4.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints)  {
+            if (enemy4.x - player.x - 20 > 0) {
+                enemy4.anims.play('leftPunchE', true);
+            }
+            else {
+                enemy4.anims.play('rightPunchE', true);
+            }
+            // Attack
+            if (player.health === 3) {
+                player.health -= boss.attack;
+                if (player.health === 2) {
+                    heart2.destroy(true)
+                } else if (player.health === 1) {
+                    heart1.destroy(true)
+                } else if (player.health === 0) {
+                    heart.destroy(true)
+                }
+                // hearts.remove(hearts.getChildren()[player.health], true);
+            } else if (cooldownAttackEnemy4 < 0) {
+                player.health -= boss.attack;
+                cooldownAttackEnemy4 = cooldown;
+                if (player.health === 2) {
+                    heart2.destroy(true)
+                } else if (player.health === 1) {
+                    heart1.destroy(true)
+                } else if (player.health === 0) {
+                    heart.destroy(true)
+                }
+            } else {
+                cooldownAttackEnemy4 -= 10;
+            }
+
+        }
+    } else {
+        enemy4.anims.play('rightStandE', true);
+    }
+}
+
 const followPlayerHard = () => {
     if (boss.health <= 0) {
-        score += 10
+        score += 50
         deathEnemyHard = true
         scoreText.setText('SCORE: ' + score);
         return;
     }
 
-    if (boss.x - player.x <= diffBetweenEnemyAndPlayer) {
+    if (Math.sqrt(Math.pow(boss.x - player.x, 2) + Math.pow(boss.y - player.y, 2)) <= diffBetweenEnemyAndPlayer) {
         if (Math.abs(boss.x - player.x) >= 50 || Math.abs(boss.y - player.y) >= 50) {
             let angle_radians = Math.atan2(boss.y - player.y, boss.x - player.x - 50);
             let leftMovement = boss.x - player.x - 50;
@@ -251,7 +313,7 @@ const followPlayerHard = () => {
 
             boss.y -= Math.sin(angle_radians) * (enemySpeed / 100);
             boss.x -= Math.cos(angle_radians) * (enemySpeed / 100);
-        } else {
+        } else if (Math.sqrt(Math.pow(boss.x - player.x, 2) + Math.pow(boss.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
             if (boss.x - player.x - 20 > 0) {
                 boss.anims.play('leftPunchE', true);
             }
@@ -398,6 +460,34 @@ function update() {
         }
 
 
+        // 4 
+        if (counterAttackPlayer === 0) {
+            if (right) {
+                player.anims.play('attackRight', true);
+            } else {
+                player.anims.play('attackLeft', true);
+            }
+            if (Math.sqrt(Math.pow(enemy4.x - player.x, 2) + Math.pow(enemy4.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
+                enemy4.health -= player.attack;
+            }
+            ++counterAttackPlayerHard;
+        }
+
+        if (cooldownAttackPlayer < 0) {
+            if (right) {
+                player.anims.play('attackRight', true);
+            } else {
+                player.anims.play('attackLeft', true);
+            }
+            if (Math.sqrt(Math.pow(enemy4.x - player.x, 2) + Math.pow(enemy4.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
+                enemy4.health -= player.attack;
+                console.log(boss.health)
+            }
+            cooldownAttackPlayer = cooldown;
+        } else {
+            cooldownAttackPlayer -= 10;
+        }
+
 
         // Hard
 
@@ -407,7 +497,6 @@ function update() {
             } else {
                 player.anims.play('attackLeft', true);
             }
-            console.log('boss.x - player.x', boss.x - player.x);
             if (Math.sqrt(Math.pow(boss.x - player.x, 2) + Math.pow(boss.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 boss.health -= player.attack;
                 console.log(boss.health)
@@ -482,6 +571,16 @@ function update() {
         }
     }
 
+    if (deathEnemy4 != true) {
+        followPlayer4();
+    } else {
+        if (enemy4.anims) {
+            enemy4.anims.play('enemyDeath', true);
+            setTimeout(enemyDeath4, 1000)
+        } else {
+            return
+        }
+    }
 
     if (heart.anims) {
         heart.anims.play('heart', true)
