@@ -2,6 +2,14 @@ const speed = 200;
 const enemySpeed = 80
 const diffBetweenEnemyAndPlayer = 500;
 
+function playAnim (anim) {
+    heart1.anims.play('heart', true)
+}
+
+function playAnim2 (anim) {
+    heart2.anims.play('heart', true)
+}
+
 const followPlayer = () => {
     
 
@@ -80,7 +88,10 @@ function update ()
 
     followPlayer();
 
-    hearts.x = 800
+    heart.anims.play('heart', true)
+    setTimeout(playAnim, 200)
+    setTimeout(playAnim2, 400)
+
     // var scrol_x = player.x - game.config.width/2;    
     // var scrol_y = player.y - game.config.height/2;    
 

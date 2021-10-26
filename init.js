@@ -1,7 +1,7 @@
 const config = {
     type: Phaser.AUTO,
-    width: 1300,
-    height: 720,
+    width: window.innerWidth,
+    height: window.innerHeight,
     scene: {
         preload: preload,
         create: create,
