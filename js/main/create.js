@@ -13,6 +13,8 @@ function create ()
 
     walls = this.physics.add.staticGroup();
     floor = this.physics.add.staticGroup();
+    hearts = this.physics.add.staticGroup();
+    gameOver = this.physics.add.staticGroup();
 
     /// 1:positionToInsertX, 2:positionToInsertY, 3:ItemsX, 4:ItemsY, 5:image, 6:width, 7:height, 8:entity
     mapGen(50, 50, 13, 1, 'grass', 100, 100, walls);

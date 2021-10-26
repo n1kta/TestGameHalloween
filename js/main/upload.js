@@ -89,13 +89,16 @@ const followPlayer = () => {
 function update ()
 {
     //////////////////////////////////// HERO MOVEMENT //////////////////////////////////
-
     if(player.health === 0) {
-        return;
+        gameOver.create(1280 / 2, 720 / 2, 'game_over');
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
     }
 
     if (cursors.left.isDown)
     {
+        console.log('LEFT');
         player.setVelocityX(-speed);
         player.setVelocityY(0);
         player.anims.play('left', true);
