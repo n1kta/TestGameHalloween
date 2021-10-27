@@ -1,38 +1,43 @@
 const speed = 200;
 const enemySpeed = 80
 const diffBetweenEnemyAndPlayer = 500;
-const diffBetweenEnemyAndPlayerByPoints = 150
+const diffBetweenEnemyAndPlayerByPoints = 200
 var left = false;
 var right = true;
+let gameOver = false
 
-function enemyDeath() {
+function bossOpacity(){
+    boss.setAlpha(1)
+}
+
+function enemyDeath (){
     enemy.setAlpha(0)
 }
 
-function enemyDeath2() {
+function enemyDeath2 (){
     enemy2.setAlpha(0)
 }
 
-function enemyDeath3() {
+function enemyDeath3 (){
     enemy3.setAlpha(0)
 }
 
-function enemyDeath4() {
+function enemyDeath4 (){
     enemy4.setAlpha(0)
 }
 
-function hardEnemyDeath() {
+function hardEnemyDeath (){
     boss.setAlpha(0)
 }
 
-function playAnim(anim) {
-    if (heart1.anims) {
+function playAnim (anim) {
+    if(heart1.anims){
         heart1.anims.play('heart', true)
     }
 }
 
-function playAnim2(anim) {
-    if (heart2.anims) {
+function playAnim2 (anim) {
+    if(heart2.anims){
         heart2.anims.play('heart', true)
     }
 }
@@ -52,7 +57,7 @@ let deathEnemy3 = false
 let cooldownAttackEnemy4 = cooldown;
 let deathEnemy4 = false
 
-let cooldownAttackEnemyHard = cooldown;
+let cooldownAttackEnemyHard = cooldown + 100;
 let counterAttackPlayerHard = 0;
 let deathEnemyHard = false
 
@@ -294,7 +299,7 @@ const followPlayer4 = () => {
 
 const followPlayerHard = () => {
     if (boss.health <= 0) {
-        score += 50
+        score += 60
         deathEnemyHard = true
         scoreText.setText('SCORE: ' + score);
         return;
@@ -306,19 +311,19 @@ const followPlayerHard = () => {
             let leftMovement = boss.x - player.x - 50;
 
             if (leftMovement > 0) {
-                boss.anims.play('leftE', true);
+                boss.anims.play('walkBossL', true);
             } else {
-                boss.anims.play('rightE', true);
+                boss.anims.play('walkBossR', true);
             }
 
             boss.y -= Math.sin(angle_radians) * (enemySpeed / 100);
             boss.x -= Math.cos(angle_radians) * (enemySpeed / 100);
-        } else if (Math.sqrt(Math.pow(boss.x - player.x, 2) + Math.pow(boss.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
+        } else if (Math.sqrt(Math.pow(boss.x - player.x, 2) + Math.pow(boss.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints + 20) {
             if (boss.x - player.x - 20 > 0) {
-                boss.anims.play('leftPunchE', true);
+                boss.anims.play('attackBossL', true);
             }
             else {
-                boss.anims.play('rightPunchE', true);
+                boss.anims.play('attackBossR', true);
             }
             // Attack
             if (player.health === 3) {
@@ -347,44 +352,59 @@ const followPlayerHard = () => {
 
         }
     } else {
-        boss.anims.play('rightStandE', true);
+        boss.anims.play('standB', true);
     }
 }
 
-function update() {
+
+function update ()
+{
     //////////////////////////////////// HERO MOVEMENT //////////////////////////////////
-    if (player.health === 0) {
-        game_over = this.physics.add.sprite(window.innerWidth / 2, window.innerHeight / 2, 'game_over').setScrollFactor(0);
+    if(player.health === 0) {
+        game_over = this.physics.add.sprite(window.innerWidth/2, window.innerHeight/2, 'game_over').setScrollFactor(0);
         setTimeout(() => {
             location.reload();
         }, 1000);
+        gameOver = true
+    }
+    if(score >= 100) {
+        game_over = this.physics.add.sprite(window.innerHeight/2, window.innerHeight/2, 'game_over2').setScrollFactor(0)
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+        gameOver = true
     }
 
-    if (cursors.left.isDown) {
+    if (cursors.left.isDown && !gameOver)
+    {
         player.setVelocityX(-speed);
         player.setVelocityY(0);
         player.anims.play('left', true);
         right = false;
         left = true;
     }
-    else if (cursors.right.isDown) {
+    else if (cursors.right.isDown && !gameOver)
+    {
         player.setVelocityX(speed);
         player.setVelocityY(0);
         player.anims.play('right', true);
         right = true;
         left = false;
     }
-    else if (cursors.down.isDown) {
+    else if (cursors.down.isDown && !gameOver)
+    {
         player.setVelocityY(speed);
         player.setVelocityX(0);
         player.anims.play('down', true);
     }
-    else if (cursors.up.isDown) {
+    else if (cursors.up.isDown && !gameOver)
+    {
         player.setVelocityY(-speed);
         player.setVelocityX(0);
         player.anims.play('up', true);
     }
-    else if (cursors.space.isDown) {
+    else if (cursors.space.isDown && !gameOver)
+    {   
         player.setVelocityX(0);
         player.setVelocityY(0);
 
@@ -408,14 +428,14 @@ function update() {
             }
             if (Math.sqrt(Math.pow(enemy.x - player.x, 2) + Math.pow(enemy.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 enemy.health -= player.attack;
-
+                
             }
             cooldownAttackPlayer = cooldown - 250;
         } else {
             cooldownAttackPlayer -= 10;
         }
 
-        if (counterAttackPlayer === 0) {
+        if (counterAttackPlayer === 0){
             if (right) {
                 player.anims.play('attackRight', true);
             } else {
@@ -441,8 +461,12 @@ function update() {
             cooldownAttackPlayer -= 10;
         }
 
-        if (counterAttackPlayer === 0) {
-            player.anims.play('attack', true);
+        if (counterAttackPlayer === 0){
+            if (right) {
+                player.anims.play('attackRight', true);
+            } else {
+                player.anims.play('attackLeft', true);
+            }
             if (Math.sqrt(Math.pow(enemy3.x - player.x, 2) + Math.pow(enemy3.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 enemy3.health -= player.attack;
             }
@@ -450,7 +474,11 @@ function update() {
         }
 
         if (cooldownAttackPlayer < 0) {
-            player.anims.play('attack', true);
+            if (right) {
+                player.anims.play('attackRight', true);
+            } else {
+                player.anims.play('attackLeft', true);
+            }
             if (Math.sqrt(Math.pow(enemy3.x - player.x, 2) + Math.pow(enemy3.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 enemy3.health -= player.attack;
             }
@@ -459,8 +487,6 @@ function update() {
             cooldownAttackPlayer -= 10;
         }
 
-
-        // 4 
         if (counterAttackPlayer === 0) {
             if (right) {
                 player.anims.play('attackRight', true);
@@ -491,7 +517,7 @@ function update() {
 
         // Hard
 
-        if (counterAttackPlayer === 0) {
+        if (counterAttackPlayer === 0 && !deathEnemyHard) {
             if (right) {
                 player.anims.play('attackRight', true);
             } else {
@@ -499,12 +525,11 @@ function update() {
             }
             if (Math.sqrt(Math.pow(boss.x - player.x, 2) + Math.pow(boss.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 boss.health -= player.attack;
-                console.log(boss.health)
             }
             ++counterAttackPlayerHard;
         }
 
-        if (cooldownAttackPlayer < 0) {
+        if (cooldownAttackPlayer < 0 && !deathEnemyHard) {
             if (right) {
                 player.anims.play('attackRight', true);
             } else {
@@ -512,7 +537,8 @@ function update() {
             }
             if (Math.sqrt(Math.pow(boss.x - player.x, 2) + Math.pow(boss.y - player.y, 2)) <= diffBetweenEnemyAndPlayerByPoints) {
                 boss.health -= player.attack;
-                console.log(boss.health)
+                boss.setAlpha(0.5)
+                setInterval(bossOpacity, 800)
             }
             cooldownAttackPlayer = cooldown;
         } else {
@@ -527,35 +553,38 @@ function update() {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
-    if (deathEnemy != true) {
+    if (deathEnemy != true)
+    {
         followPlayer();
-    } else {
-        if (enemy.anims) {
+    }else {
+        if(enemy.anims){
             enemy.anims.play('enemyDeath', true);
             setTimeout(enemyDeath, 1000)
-        } else {
+        }else {
             return
         }
     }
 
-    if (deathEnemy2 != true) {
+    if (deathEnemy2 != true)
+    {
         followPlayer2();
-    } else {
-        if (enemy2.anims) {
+    }else {
+        if(enemy2.anims){
             enemy2.anims.play('enemyDeath', true);
             setTimeout(enemyDeath2, 1000)
-        } else {
+        }else {
             return
         }
     }
 
-    if (deathEnemy3 != true) {
+    if (deathEnemy3 != true)
+    {
         followPlayer3();
-    } else {
-        if (enemy3.anims) {
+    }else {
+        if(enemy3.anims){
             enemy3.anims.play('enemyDeath', true);
             setTimeout(enemyDeath3, 1000)
-        } else {
+        }else {
             return
         }
     }
@@ -564,8 +593,7 @@ function update() {
         followPlayerHard();
     } else {
         if (boss.anims) {
-            boss.anims.play('enemyDeath', true);
-            setTimeout(hardEnemyDeath, 1000)
+            boss.anims.play('deathB', true);
         } else {
             return
         }
@@ -582,18 +610,17 @@ function update() {
         }
     }
 
-    if (heart.anims) {
+    if(heart.anims){
         heart.anims.play('heart', true)
     }
-    if (heart1.anims) {
+    if(heart1.anims){
         setTimeout(playAnim, 200)
     }
-    if (heart2.anims) {
+    if(heart2.anims){
         setTimeout(playAnim2, 400)
-    }
-    boss.anims.play('standB', true)
-
-
+    }    
+    
+    
 
     // var scrol_x = player.x - game.config.width/2;    
     // var scrol_y = player.y - game.config.height/2;    

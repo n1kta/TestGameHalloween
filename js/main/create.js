@@ -11,15 +11,22 @@ function create ()
     /////////////// GROUPS /////////////////////////
 
 
-    walls = this.physics.add.staticGroup();
-    floor = this.physics.add.staticGroup();
-    hearts = this.physics.add.staticGroup();
+    map = this.make.tilemap({ key:'dungeon', tileWidth: 80, tileHeight: 80});
+    const styleSet=map.addTilesetImage('mDungeon','tiles')
+
+    layer = map.createLayer('ground',styleSet)
+    wall = map.createLayer('wall',styleSet)
+
+    wall.setCollisionByProperty({ collide: true })
+    // walls = this.physics.add.staticGroup();
+    // floor = this.physics.add.staticGroup();
+    // hearts = this.physics.add.staticGroup();
 
     /// 1:positionToInsertX, 2:positionToInsertY, 3:ItemsX, 4:ItemsY, 5:image, 6:width, 7:height, 8:entity
-    mapGen(50, 50, 13, 1, 'grass', 100, 100, walls);
-    mapGen(50, 150, 1, 6, 'grass', 100, 100, walls);
-    mapGen(50, 750, 13, 1, 'grass', 100, 100, walls);
-    mapGen(150, 150, 12, 6, 'orange', 100, 100, floor);
+    // mapGen(50, 50, 13, 1, 'grass', 100, 100, walls);
+    // mapGen(50, 150, 1, 6, 'grass', 100, 100, walls);
+    // mapGen(50, 750, 13, 1, 'grass', 100, 100, walls);
+    // mapGen(150, 150, 12, 6, 'orange', 100, 100, floor);
 
     //////////////////////////// ENTITIES ////////////////////////
 
@@ -30,32 +37,34 @@ function create ()
     heart1 = this.physics.add.sprite(150, 100, 'heart').setScrollFactor(0)
     heart2 = this.physics.add.sprite(200, 100, 'heart').setScrollFactor(0)
 
-    player = this.physics.add.sprite(200, 200, 'dude');
+    player = this.physics.add.sprite(500, 4100, 'dude');
     player.health = 3;
     player.attack = attack;
+
+    this.physics.add.collider(player, wall);
     // player.setCollideWorldBounds(true);
 
-    enemy = this.physics.add.sprite(1400, 200, 'enemy');
+    enemy = this.physics.add.sprite(2200, 4200, 'enemy');
     enemy.health = healthSimpleEnemy;
     enemy.attack = attack;
     enemy.setBounce(0.2);
 
-    enemy2 = this.physics.add.sprite(1300, 400, 'enemy');
+    enemy2 = this.physics.add.sprite(2900, 3900, 'enemy');
     enemy2.health = healthSimpleEnemy;
     enemy2.attack = attack;
     enemy2.setBounce(0.2);
 
-    enemy3 = this.physics.add.sprite(1200, 500, 'enemy');
+    enemy3 = this.physics.add.sprite(3100, 2200, 'enemy');
     enemy3.health = healthSimpleEnemy;
     enemy3.attack = attack;
     enemy3.setBounce(0.2);
 
-    enemy4 = this.physics.add.sprite(1400, 500, 'enemy');
+    enemy4 = this.physics.add.sprite(2500, 2200, 'enemy');
     enemy4.health = healthSimpleEnemy;
     enemy4.attack = attack;
     enemy4.setBounce(0.2);
 
-    boss = this.physics.add.sprite(900, 300, 'boss');
+    boss = this.physics.add.sprite(5900, 2200, 'boss');
     boss.health = healthHardEnemy - 1;
     boss.attack = 1;
     boss.setBounce(0.2);
@@ -190,21 +199,25 @@ function create ()
         frameRate: 10,
     })
 
+    this.anims.create({
+        key: 'deathB',
+        frames: this.anims.generateFrameNumbers('bossDeath', { start: 4, end: 7 }),
+        frameRate: 10,
+    })
+
+
 
 
 
     this.anims.create({
         key: 'enemyDeath',
-        frames: this.anims.generateFrameNumbers('enemyDeath', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('enemyDeath', { start: 4, end: 7 }),
         frameRate: 10,
     })
 
 
     ///////////////////////////// COLLISION //////////////////////////
 
-    this.physics.add.collider(player, walls);
-    this.physics.add.collider(enemy, walls);
-    this.physics.add.collider(boss, walls);
     this.cameras.main.startFollow(player, true);
 
     // this.scale.startFullscreen()
